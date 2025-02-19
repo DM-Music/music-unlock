@@ -1,0 +1,38 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+  <title>Unlock Music</title>  
+</head>  
+<body>  
+  <h1>Loading...</h1>  
+  <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>  
+  <script>  
+    // Google Apps Script URL ကို ဒီနေရာမှာထည့်ပါ  
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhgt0Lq5zwkKT7P6remsi68HxlP7imuekQaU-elfzjY6r8Dj7wkDA4Nh_Ht2puCPqZyw/exec";  
+    // YouTube Unlisted Link ကို ဒီနေရာမှာထည့်ပါ  
+    const YOUTUBE_LINK = "https://youtu.be/wwOO05upC-M";  
+
+    async function checkDevice() {  
+      try {  
+        // Device ID ဖတ်ပါ  
+        const fp = await FingerprintJS.load();  
+        const result = await fp.get();  
+        const deviceId = result.visitorId;  
+
+        // Google Script သို့ Device ID ပို့ပါ  
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?device=${deviceId}`);  
+        const resultText = await response.text();  
+
+        if (resultText === "allowed") {  
+          window.location.href = YOUTUBE_LINK;  
+        } else {  
+          alert("ဤ Device ဖြင့် အသုံးပြု၍မရပါ။ (Device 2 ခုထက်ပိုသုံးပြီးပါပြီ)");  
+        }  
+      } catch (error) {  
+        alert("Error: " + error.message);  
+      }  
+    }  
+    checkDevice();  
+  </script>  
+</body>  
+</html>  
